@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+
+    // 单向链表
+    function LinkedList() {
+        //内部类 链表里的节点
+        function Node(data) {
+            this.data = data
+            //初始 head 为 null  head 指向链表的第一个节点
+            this.next = null;
+        }
+
+        //初始链表长度
+        this.head = null
+        this.length = 0
+
+        //追加方法
+        // 1.append 向链表最末尾添加一个元素
+        LinkedList.prototype.append = function (data) {
+            // 1.创建节点
+            let newNode = new Node(data)
+            // 2.判断是否是添加的第一个节点
+            // 链表长度为 0 时，即只有 head 的时候
+            if (this.length == 0) {
+                this.head = newNode
+            } else {
+                // 链表长度大于 0 时，在最后面添加新节点
+                let current = this.head
+                // 当 currentNode.next 不为空时，
+                // 循序依次找最后一个节点，即节点的 next 为 null 时
+                while (current.next) {
+                    current = current.next
+                }
+                // 最后一个节点的 next 指向新节点
+                current.next = newNode
+            }
+
+            // 3.length +1
+            this.length += 1 //this.length = this.length + 1
+        }
+
+        // 2.toString
+        LinkedList.prototype.toString = function () {
+            // 1.初始指向第一个元素
+            let current = this.head
+            // 2.储存拼接数据
+            let listString = ''
+            // 3.循环挨个拼接
+            while (current) {
+                listString += current.data + ' '
+                // 3.3 条件 每次凭拼接后指向下00一个元素
+                current = current.next
+            }
+            // 4.返回拼接数据
+            return listString
+        }
+
+        // 3.insert //指定位置插入元素
+        LinkedList.prototype.insert = function (position, data) {
+            // 1.边界判断
+            if (position < 0 || position > this.length) return false
+            // 2.逻辑处理
+            let newNode = new Node(data)
+            if (position == 0) {
+                // 新的node 指向初始head指向的值
+                newNode.next = this.head
+                // 然后指向新的值
+                this.head = newNode
+            } else {
+                let index = 0 //初始开始查询位置
+                let current = this.head //每次查询经过元素
+                let previous = null //每次查询经过的上一个元素
+                while (index++ < position) {
+                    previous = current
+                    current = current.next
+                }
+                // 新元素 指向最后一个元素
+                newNode.next = current
+                // 上一个元素指向新元素
+                previous.next = newNode
+            }
+            // 最后更新链表长度
+            this.length += 1
+            return newNode
+        }
+
+        //get
+        LinkedList.prototype.get = function (position) {
+            //判断边界
+            if (position < 0 || position >= this.length) return null
+
+            //逻辑处理
+            let current = this.head
+            let index = 0
+            while (index++ < position) {
+                current = current.next
+            }
+            return current.data
+        }
+    }
+
+    const list = new LinkedList()
+    list.append('adc')
+    list.append('cba')
+    list.append('nba')
+
+    list.insert(0, 'aaa')
+    list.insert(3, 'bbb')
+    list.insert(5, 'ccc')
+
+    alert(list)
+
+    alert(list.get(5))
+
+</script>
+</body>
+</html>
