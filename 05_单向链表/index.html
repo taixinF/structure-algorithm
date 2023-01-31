@@ -103,21 +103,73 @@
             }
             return current.data
         }
+
+        //indexOf
+        LinkedList.prototype.indexOf = function (data) {
+            let current = this.head
+            let index = 0
+            while (current) {
+                if (current.data === data) {
+                    return index
+                }
+                current = current.next
+                index += 1
+            }
+            return -1
+        }
+
+        //update
+        LinkedList.prototype.update = function (position, data) {
+            //判断边界
+            if (position < 0 || position >= this.length) return false
+
+            // 2、痛过循环遍历，找到指定 position 的节点
+            let current = this.head;
+            let index = 0;
+            while (index++ < position) {
+                current = current.next;
+            }
+            // 3、修改节点 data
+            current.data = data;
+            return current;
+        }
+
+        //removeAt
+        LinkedList.prototype.removeAt = function (position) {
+            //边界判断
+            if (position < 0 || position >= this.length) return null
+            //逻辑处理
+            if (position == 0) {
+                //这里可以完美的考虑到js的垃圾回收
+                this.head = this.head.next
+            } else {
+                let current = this.head
+                let index = 0
+                let previous = null
+                while (index++ < position) {
+                    previous = current
+                    current = current.next
+                }
+                //前一个节点 再删除的时候 需要指向删除的next
+                previous.next = current.next
+            }
+
+            this.length -= 1
+            return true
+        }
     }
 
     const list = new LinkedList()
     list.append('adc')
     list.append('cba')
     list.append('nba')
-
     list.insert(0, 'aaa')
     list.insert(3, 'bbb')
     list.insert(5, 'ccc')
-
+    list.update(0, 'aaaa')
+    list.removeAt(3)
     alert(list)
-
-    alert(list.get(5))
-
+    alert(list.get(3))
 </script>
 </body>
 </html>
