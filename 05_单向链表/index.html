@@ -157,6 +157,25 @@
             this.length -= 1
             return true
         }
+
+        //remove
+        LinkedList.prototype.remove = function (data) {
+            // 1. 获取data在列表中的位置
+            let position = this.indexOf(data)
+            // 2.根据位置信息 删除节点
+            return this.removeAt(position) //Boolean
+        }
+
+        //isEmpty
+        LinkedList.prototype.isEmpty = function () {
+            return this.length == 0
+        }
+
+        //size
+        LinkedList.prototype.size = function () {
+            return this.length
+        }
+
     }
 
     const list = new LinkedList()
@@ -167,9 +186,9 @@
     list.insert(3, 'bbb')
     list.insert(5, 'ccc')
     list.update(0, 'aaaa')
-    list.removeAt(3)
-    alert(list)
-    alert(list.get(3))
+
+    alert(list.size())
+    alert(list.isEmpty())
 </script>
 </body>
 </html>
