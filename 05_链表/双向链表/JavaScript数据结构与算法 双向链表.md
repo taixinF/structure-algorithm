@@ -92,7 +92,7 @@ if (this.head === null) {
 this.length++;
 }
 ```
-
+![](.JavaScript数据结构与算法 双向链表_images/7c09fa12.png)
 ### insert(position, element)
 
 ```js

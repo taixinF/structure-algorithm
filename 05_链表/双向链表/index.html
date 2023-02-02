@@ -12,11 +12,14 @@
         //内部类
         function Node(data) {
             this.data = data
+            this.prev = null
             this.next = null
         }
 
         //初始头部节点
         this.head = null
+        //链表最后一个元素
+        this.tail = null
         //链表长度
         this.length = 0
 
@@ -27,19 +30,39 @@
             //判断是否是第一个节点
             if (this.length == 0) {
                 this.head = newNode
+                this.tail = newNode
             } else {
-                let current = this.head
-                //不为空就一直往下找
-                while (current.next) {
-                    current = current.next
-                }
-                //让最后一个节点的next 指向新的节点
-                current.next = newNode
+                //单向还是需要通过循环去寻找最后一个节点
+                // let current = this.head
+                // //不为空就一直往下找
+                // while (current.next) {
+                //     current = current.next
+                // }
+                // //让最后一个节点的next 指向新的节点
+                // current.next = newNode
+
+                //双向列表设计很巧妙
+                // 可以直接通过tail最后一个节点进行添加 免除了不必要的循环操作
+                this.tail.next = newNode
+                newNode.prev = this.tail
+                this.tail = newNode
+
             }
             //length + 1
             this.length += 1
         }
+
+        //toString
+        LinkedList.prototype.toString = function () {
+        }
+        //forwardString
+        LinkedList.prototype.forwardString = function () {
+        }
+        //backwordString
+        LinkedList.prototype.backwordString = function () {
+        }
     }
+
 
 </script>
 </body>
