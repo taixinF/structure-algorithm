@@ -8,7 +8,7 @@
 
 <script>
     //链表创建
-    function LinkedList(data) {
+    function DoubleLinkedList(data) {
         //内部类
         function Node(data) {
             this.data = data
@@ -25,7 +25,7 @@
 
         //方法
         //append
-        LinkedList.prototype.append = function (data) {
+        DoubleLinkedList.prototype.append = function (data) {
             let newNode = new Node(data)
             //判断是否是第一个节点
             if (this.length == 0) {
@@ -53,14 +53,29 @@
         }
 
         //toString
-        LinkedList.prototype.toString = function () {
+        DoubleLinkedList.prototype.toString = function () {
         }
         //forwardString
-        LinkedList.prototype.forwardString = function () {
+        DoubleLinkedList.prototype.forwardString = function () {
         }
         //backwordString
-        LinkedList.prototype.backwordString = function () {
+        DoubleLinkedList.prototype.backwordString = function () {
         }
+
+        //insert
+
+        //get
+
+        //indexOf
+
+        //update
+
+        //removeAt
+        DoubleLinkedList.prototype.removeAt = function (position) {
+
+        }
+        //remove
+
     }
 
 
