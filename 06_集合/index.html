@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>集合</title>
+</head>
+<body>
+
+<script>
+    //集合实现
+    function Set() {
+        //属性
+        this.items = {}
+
+        //方法
+        //add
+        Set.prototype.add = function (value) {
+            //判断当前集合中是否已经包含了该元素
+            if (this.has(value)) {
+                return false
+            }
+
+            //将元素添加到集合中
+            this.items[value] = value
+            return true
+        }
+        //has方法
+        Set.prototype.has = function (value) {
+            return this.items.hasOwnProperty(value)
+        }
+        //remove
+        Set.prototype.remove = function (value) {
+            //判断是否包含元素
+            if (!this.items.has(value)) {
+                return false
+            }
+            //包含删除
+            delete this.items[value]
+            return true
+        }
+        //clear
+        Set.prototype.clear = function () {
+            this.items = {}
+        }
+        //size
+        Set.prototype.size = function () {
+            return Object.keys(this.items).length
+        }
+        //values
+        Set.prototype.values = function () {
+            //这里的key value 都相等所以可以用一样的
+            return Object.keys(this.items)
+        }
+
+
+        //集合间的操作
+        // 并集
+        Set.prototype.union = function (otherSet) {
+            //创建新的对比集合
+            let unionSet = new Set()
+
+            //添加原本的
+            for (let value of this.values()) {
+                unionSet.add(value)
+            }
+
+            //添加otherSet 同时过滤重复的
+            for (const value of otherSet.values()) {
+                unionSet.add(value)// 方法中有自己去重复
+            }
+
+            return unionSet
+        }
+
+        //交集
+        Set.prototype.intersection = function (otherSet) {
+            //this: 集合A
+            //otherSet: 集合B
+            //创建新集合
+            let intersectionSet = new Set()
+
+            //从A中去除一个个元素 判断是否是否存在于集合B中 存在放入新集合中
+            let values = otherSet.values()
+            for (let i = 0; i < values.length; i++) {
+                let item = values[i]
+                if (otherSet.has(item)) {
+                    intersectionSet.add(item)
+                }
+            }
+            return intersectionSet
+        }
+
+        //差集 ：x存在鱼A中 且 x不存在于B中
+        Set.prototype.difference = function (otherSet) {
+            //this: 集合A
+            //otherSet: 集合B
+            //创建新集合
+            let differenceSet = new Set()
+
+            // 从当前集合中取出每一个 value，判断是否在 otherSet 集合中存在，不存在的即为差集
+            for (let value of this.values()) {
+                if (!otherSet.has(value)) {
+                    differenceSet.add(value);
+                }
+            }
+        }
+
+        //子集
+        Set.prototype.subset = function (otherSet) {
+            for (let key in this.values()) {
+                if (!otherSet.has(key)) {
+                    return false
+                }
+            }
+            return true
+
+        }
+
+    }
+
+    let setA = new Set()
+    setA.add('abc')
+    setA.add('cba')
+    setA.add('nba')
+    let setB = new Set()
+    setB.add('aaa')
+    setB.add('nba')
+    setB.add('cba')
+    let unionSet = setA.union(setB)
+    alert(unionSet.values())
+
+
+</script>
+</body>
+</html>
