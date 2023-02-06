@@ -8,7 +8,7 @@
 
 <script>
     //链表创建
-    function DoubleLinkedList(data) {
+    function DoublyLinkedList(data) {
         //内部类
         function Node(data) {
             this.data = data
@@ -25,7 +25,7 @@
 
         //方法
         //append
-        DoubleLinkedList.prototype.append = function (data) {
+        DoublyLinkedList.prototype.append = function (data) {
             let newNode = new Node(data)
             //判断是否是第一个节点
             if (this.length == 0) {
@@ -53,31 +53,88 @@
         }
 
         //toString
-        DoubleLinkedList.prototype.toString = function () {
+        DoublyLinkedList.prototype.toString = function () {
+            return this.backwordString()
         }
         //forwardString
-        DoubleLinkedList.prototype.forwardString = function () {
+        DoublyLinkedList.prototype.forwardString = function () {
+            let current = this.tail
+            //返回拼接数据
+            let resultString = ''
+            //循环条件
+            while (current) {
+                resultString += current.data + ' '
+                // 每次循环指向下一个节点
+                current = current.prev
+            }
+            return resultString
         }
         //backwordString
-        DoubleLinkedList.prototype.backwordString = function () {
+        DoublyLinkedList.prototype.backwordString = function () {
+            let current = this.head
+            //返回拼接数据
+            let resultString = ''
+            //循环条件
+            while (current) {
+                resultString += current.data + ' '
+                // 每次循环指向下一个节点
+                current = current.next
+            }
+            return resultString
         }
 
         //insert
+        DoublyLinkedList.prototype.insert = function (position, data) {
+            //边界判断
+            if (position < 0 || position > this.length) return false
 
-        //get
+            //方法处理
+            let newNode = new Node(data)
+            if (this.length == 0) {
+                this.head = newNode
+                this.tail = newNode
+            } else {
+                if (position == 0) {
+                    this.head.prev = newNode
+                    newNode.next = this.head
+                    this.tail = newNode
+                } else if (position == this.length) {
+                    newNode.prev = this.tail
+                    this.tail.next = newNode
+                    this.tail = newNode
+                } else {
+                    let current = this.head
+                    let index = 0
+                    while (index++ < position) {
+                        current = current.next
+                    }
+                    newNode.next = current
+                    newNode.prev = current.prev
+                    current.prev.next = newNode
+                    current.prev = newNode
+                }
+            }
 
-        //indexOf
+            this.length += 1
 
-        //update
-
-        //removeAt
-        DoubleLinkedList.prototype.removeAt = function (position) {
-
+            return true
         }
-        //remove
+
+
+        //insert
 
     }
 
+
+    //测试代码
+    let list = new DoublyLinkedList()
+
+    //1.测试append方法
+    list.append('abc')
+    list.append('cba')
+    list.append('nba')
+    list.insert(3, 'ccc')
+    alert(list)
 
 </script>
 </body>
