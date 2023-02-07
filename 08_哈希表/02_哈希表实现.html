@@ -64,6 +64,15 @@
             bucket.push([key, value])
             //length plus one
             this.count += 1
+
+            //6. whether to perform capacity expansion
+            if (this.count > this.limit * 0.75) {
+                //用新的质数去作为它的容量
+                let newSize = this.limit * 2
+                let newPrime = this.getPrime(newSize)
+                this.resize(newPrime)
+            }
+
         }
 
         //FETCH OPERATION
@@ -115,6 +124,13 @@
                     bucket.splice(i, 1)
                     this.count--
                     return tuple[1]
+
+                }
+                // reduced(adj:减少的) capacity(n：容量)
+                if (this.limit > 7 && this.count < this.limit * 0.25) {
+                    let newSize = Math.floor(this.limit / 2)
+                    let newPrime = this.getPrime(newSize)
+                    this.resize(newPrime)
                 }
             }
             // 5.still not found
@@ -130,11 +146,58 @@
         HashTable.prototype.size = function () {
             return this.count
         }
-        // analyze before you write
+
+        //analyze before you write
+        HashTable.prototype.resize = function (newLimit) {
+            // 保存旧的数组内容
+            let oldStorage = this.storage
+
+            //重置所有的属性
+            this.storage = []
+            this.count = 0
+            this.limit = newLimit
+
+            //遍历oldStorage 所有的bucket
+            for (let i = 0; i < oldStorage.length; i++) {
+                //取出对应的bucket
+                let bucket = oldStorage[i]
+                //determines whether the bucket is empty
+                if (bucket == null) {
+                    continue
+                }
+                // bucket 中有数据 那么取出数据 重新插入
+                for (let j = 0; j < bucket.limit; j++) {
+                    let tuple = bucket[j]
+                    this.put(tuple[0], tuple[1])
+                }
+            }
+        }
+
+
+        //判断某个数字是否是质数
+        HashTable.prototype.isPrime = function (num) {
+            let square = parseInt(Math.sqrt(num))
+            for (let i = 2; i < square; i++) {
+                if (num % i == 0) {
+                    return false
+                }
+            }
+            return true
+        }
+
+
+        //获取质数的方法
+        HashTable.prototype.getPrime = function (num) {
+            //一直找到科的才返回
+            while (!this.isPrime(num)) {
+                num++
+            }
+            return num
+        }
     }
 
 
-    //测试哈希表
+    //test the hash table
     let ht = new HashTable()
     ht.put('abc', '123')
     ht.put('cba', '321')

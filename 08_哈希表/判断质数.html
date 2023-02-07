@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    //Wrapper function: Determines whether the number (passed in) is prime
+    //Characteristics(n. 特性): Divisible only by 1 and itself, not by numbers between 2 and num-1
+    // function isPrime(num) {
+    //     //That's not very efficient
+    //     for (let i = 2; i < num; i++) {
+    //         if (num % i == 0) {
+    //             return false
+    //         }
+    //     }
+    //     return true
+    // }
+
+
+    //an algorithm（算法） that doubles its efficiency
+    //it s much more efficient
+    function isPrime(num) {
+        let square = parseInt(Math.sqrt(num))
+        for (let i = 2; i < square; i++) {
+            if (num % i == 0) {
+                return fals e
+            }
+        }
+        return true
+    }
+
+    alert(isPrime(3))
+    alert(isPrime(11))
+    alert(isPrime(123))
+    alert(isPrime(41))
+</script>
+</body>
+</html>2
