@@ -408,12 +408,12 @@ get(key)
 
 实现思路：
 
-- 首先，根据 key 通过哈希函数获取它在 `storage` 中对应的索引值 `index`。
+``- 首先，根据 key 通过哈希函数获取它在 `storage` 中对应的索引值 `index`。
 - 然后，根据索引值获取对应的 `bucket`。
 - 接着，判断获取到的 `bucket` 是否为 `null`，如果为 `null`，直接返回 `null`。
 - 随后，线性查找 `bucket`，寻找对应的数据，并且删除。
 - 最后，依然没有找到，返回 `null`。
-
+``
 ```js
 // remove(key) 删除指定 key 的数据
 remove(key)

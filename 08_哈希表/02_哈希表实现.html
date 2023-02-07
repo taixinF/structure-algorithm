@@ -9,8 +9,118 @@
 <script>
     function HashTable() {
         //属性
+        this.storage = [] //存储 [[[],[],[]],[[],[]],[[]]] storage structure
+        this.count = 0 //The elements already stored in the current hash table
+        //loadFactor //loading factor（n：因子） -> 0.75  || < 0.25  10000  --> 0.05
+        this.limit = 7 //used to record the length of an array
 
         //方法
+        //HASH FUNCTION
+        // 1>converts（v:转换） a string to a number for comparison: hashCode
+        // 2>Compress a large numeric hash Code into an array range (size)
+        HashTable.prototype.hashFunc = function (str, size) {
+            //1.define the hash code variable
+            let hashCode = 0
+
+            //2.霍纳算法,to compute the hash code
+            //cats -> ‘a’ -> Unicode编码
+            for (let i = 0; i < str.length; i++) {
+                hashCode = 37 * hashCode + str.charCodeAt(i)
+            }
+
+            //3.remainder operation
+            let index = hashCode % size
+            return index
+        }
+        //链地址法
+        //INSERT AND MODIFY OPERATIONS
+        //key：index transformation
+        // realization（n：实现） idea：
+        // 首先，根据 key 获取索引值 index，目的为将数据插入到 storage 的对应位置；
+        // 然后，根据索引值取出 bucket，如果 bucket 不存在，先创建 bucket，随后放置在该索引值的位置；
+        // 接着，判断新增还是修改原来的值。如果已经有值了，就修改该值；如果没有，就执行后续操作。
+        // 最后，进行新增数据操作。
+        HashTable.prototype.put = function (key, value) {
+            // 1.get the corresponding（adj：相应的） index |based on|（以...为基础） the key
+            let index = this.hashFunc(key, this.limit)
+            // 2.Fetch the corresponding bucket |according to|（根据...） the index
+            let bucket = this.storage[index] //[![[0,1]]
+            //只能用whether引导主语、表语或同位语从句，不可用if
+            // 3.check whether（是否） the bucket is null
+            if (bucket === null) {
+                bucket = []
+                //sure there's a bucket
+                this.storage[index] = bucket
+            }
+            // 4.whether to modify(v:修改) data
+            for (let i = 0; i < bucket.length; i++) {
+                let tuple = bucket[i] //[[![0,1]]]
+                if (tuple[0] === key) {
+                    tuple[1] = value
+                    return
+                }
+            }
+            // 5.add operation
+            bucket.push([key, value])
+            //length plus one
+            this.count += 1
+        }
+
+        //FETCH OPERATION
+        //实现思路：
+        //首先，根据 key 通过哈希函数获取它在 `storage` 中对应的索引值 `index`。
+        //然后，根据索引值获取对应的 `bucket`。
+        //接着，判断获取到的 `bucket` 是否为 `null`，如果为 `null`，直接返回 `null`。
+        //随后，线性遍历 `bucket` 中每一个 `key` 是否等于传入的 `key`。如果等于，直接返回对应的 `value`。
+        //最后，遍历完 `bucket` 后，仍然没有找到对应的 `key`，直接 `return null` 即可。
+        HashTable.prototype.get = function (key) {
+            // 1.get the corresponding（adj：相应的） index |based on|（以...为基础） the key
+            let index = this.hashFunc(key, this.limit)
+            // 2.Fetch the corresponding bucket |according to|（根据...） the index
+            let bucket = this.storage[index] //[![[0,1]]
+            // 3.check whether（是否） the bucket is null
+            if (bucket === null) {
+                bucket = []
+            }
+            //4.if you have a bucket to do a linear lookup
+            for (let i = 0; i < bucket.length; i++) {
+                let tuple = bucket[i]
+                if (tuple[0] === key) {
+                    return tuple[1]
+                }
+
+            }
+            // 5.still not found
+            return null
+        }
+
+        //REMOVE
+        //实现思路：
+        //首先，根据 key 通过哈希函数获取它在 `storage` 中对应的索引值 `index`。
+        //然后，根据索引值获取对应的 `bucket`。
+        //接着，判断获取到的 `bucket` 是否为 `null`，如果为 `null`，直接返回 `null`。
+        //随后，线性查找 `bucket`，寻找对应的数据，并且删除。
+        //最后，依然没有找到，返回 `null`。
+        HashTable.prototype.remove = function (key) {
+            // 1.get the corresponding（adj：相应的） index |based on|（以...为基础） the key
+            let index = this.hashFunc(key, this.limit)
+            // 2.Fetch the corresponding bucket |according to|（根据...） the index
+            let bucket = this.storage[index] //[![[0,1]]
+            // 3.check whether（是否） the bucket is null
+            if (bucket === null) return null
+            // 4. If it has a bucket, it does a linear lookup and removes it
+            for (let i = 0; i < bucket.length; i++) {
+                let tuple = bucket[i]
+                if (tuple[0] === key) {
+                    bucket.splice(i, 1)
+                    this.count--
+                    return tuple[1]
+                }
+            }
+            // 5.still not found
+            return null
+        }
+
     }
 </script>
 </body>
