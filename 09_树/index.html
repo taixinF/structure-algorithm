@@ -33,7 +33,7 @@
 
         //recursive method
         BinarySearchTree.prototype.insertNode = function (node, newNode) {
-            if (newNode < node.key) {//towardsTheLeft
+            if (newNode.key < node.key) {//towardsTheLeft
                 if (node.left == null) {
                     node.left = newNode
                 } else {
@@ -56,12 +56,14 @@
         }
         BinarySearchTree.prototype.preorderTraversalNode = function (node, handler) {
             if (node != null) {
+                //processing through node
                 handler(node.key)
+                //Processing through node - left node
                 this.preorderTraversalNode(node.left, handler)
-                this.preorderTraversalNode(node.left, handler)
+                //Processing through node - right node
+                this.preorderTraversalNode(node.right, handler)
             }
         }
-
 
     }
 
@@ -82,6 +84,7 @@
     bst.insert(18);
     bst.insert(25);
     bst.insert(19);
+    bst.insert(6);
 
     let resultString = ''
     bst.preOrderTraversal(function (key) {
