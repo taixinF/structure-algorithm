@@ -65,6 +65,37 @@
             }
         }
 
+        //中序遍历
+        BinarySearchTree.prototype.midOrderTraversal = function (handler) {
+            this.midOrderTraversalNode(this.root, handler)
+        }
+
+        BinarySearchTree.prototype.midOrderTraversalNode = function (node, handler) {
+            if (node != null) {
+                //Processing through node - left node
+                this.midOrderTraversalNode(node.left, handler)
+                //processing through node
+                handler(node.key)
+                //Processing through node - right node
+                this.midOrderTraversalNode(node.right, handler)
+            }
+        }
+
+        BinarySearchTree.prototype.bfOrderTraversal = function (handler) {
+            this.bfOrderTraversalNode(this.root, handler)
+        }
+
+        BinarySearchTree.prototype.bfOrderTraversalNode = function (node, handler) {
+            if (node != null) {
+                //Processing through node - left node
+                this.bfOrderTraversalNode(node.left, handler)
+                //Processing through node - right node
+                this.bfOrderTraversalNode(node.right, handler)
+                //processing through node
+                handler(node.key)
+            }
+        }
+
     }
 
     //establish
@@ -86,8 +117,23 @@
     bst.insert(19);
     bst.insert(6);
 
+    // 1.先序遍历
     let resultString = ''
     bst.preOrderTraversal(function (key) {
+        resultString += key + ' '
+    })
+    alert(resultString)
+
+    // 2.中序遍历
+    resultString = ''
+    bst.midOrderTraversal(function (key) {
+        resultString += key + ' '
+    })
+    alert(resultString)
+
+    // 3.后序遍历
+    resultString = ''
+    bst.bfOrderTraversal(function (key) {
         resultString += key + ' '
     })
     alert(resultString)
