@@ -81,6 +81,7 @@
             }
         }
 
+        //后序遍历
         BinarySearchTree.prototype.bfOrderTraversal = function (handler) {
             this.bfOrderTraversalNode(this.root, handler)
         }
@@ -96,6 +97,47 @@
             }
         }
 
+        //最小值
+        BinarySearchTree.prototype.min = function () {
+            let node = this.root
+            let key = null
+            while (node !== null) {
+                key = node.key
+                node = node.left
+            }
+            return key
+        }
+
+        //search
+        BinarySearchTree.prototype.search = function (key) {
+            //获取根节点
+            let node = this.root
+
+            //循环搜索我们这个key
+            while (node != null) {
+                if (key < node.key) {
+                    node = node.left
+                } else if (key > node.key) {
+                    node = node.right
+                } else {
+                    return true
+                }
+            }
+            return false
+        }
+
+
+    }
+
+    //最大值
+    BinarySearchTree.prototype.max = function () {
+        let node = this.root
+        let key = null
+        while (node !== null) {
+            key = node.key
+            node = node.right
+        }
+        return key
     }
 
     //establish
@@ -122,21 +164,31 @@
     bst.preOrderTraversal(function (key) {
         resultString += key + ' '
     })
-    alert(resultString)
+    // alert(resultString)
 
     // 2.中序遍历
     resultString = ''
     bst.midOrderTraversal(function (key) {
         resultString += key + ' '
     })
-    alert(resultString)
+    // alert(resultString)
 
     // 3.后序遍历
     resultString = ''
     bst.bfOrderTraversal(function (key) {
         resultString += key + ' '
     })
-    alert(resultString)
+    // alert(resultString)
+
+    // 5.
+    alert(bst.max())
+    alert(bst.min())
+
+
+    //search
+    alert(bst.search(25))
+    alert(bst.search(24))
+    alert(bst.search(2))
 </script>
 </body>
 </html>
