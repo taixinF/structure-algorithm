@@ -108,12 +108,22 @@
             return key
         }
 
+        //最大值
+        BinarySearchTree.prototype.max = function () {
+            let node = this.root
+            let key = null
+            while (node !== null) {
+                key = node.key
+                node = node.right
+            }
+            return key
+        }
+
         //search
         BinarySearchTree.prototype.search = function (key) {
-            //获取根节点
+            //get the root node
             let node = this.root
-
-            //循环搜索我们这个key
+            //loop through our key
             while (node != null) {
                 if (key < node.key) {
                     node = node.left
@@ -127,17 +137,98 @@
         }
 
 
-    }
+        //remove
+        BinarySearchTree.prototype.remove = function (key) { //7
+            // 1.find the node you want to delete
 
-    //最大值
-    BinarySearchTree.prototype.max = function () {
-        let node = this.root
-        let key = null
-        while (node !== null) {
-            key = node.key
-            node = node.right
+            // 1.1。define variables and save some information
+            let current = this.root
+            let parent = null
+            let isLeftChild = true
+
+            // 1.2.start looking for the deleted node
+            while (current.key !== key) {
+                parent = current
+                if (key < current.key) {
+                    isLeftChild = true
+                    current = current.left
+                } else {
+                    isLeftChild = false
+                    current = current.right
+                }
+
+                //某种情况：已经找到了最后的节点，依然没有找到 key
+                if (current == null) return false
+
+            }
+
+            // 2.delete the node as required（根据需要
+            // find current key == key
+            // 2.1.the deleted node is a leaf node no child nodes
+            // the first node is a leaf node
+            if (current.left == null && current.right == null) {
+                if (current == this.root) {
+                    this.root = null
+                } else if (isLeftChild) {
+                    parent.left = null
+                } else {
+                    parent.right = null
+                }
+            }
+
+            // 2.2.删除的节点有一个子节点
+            else if (current.right == null) {
+                if (current == this.root) {
+                    this.root = current.left
+                } else if (isLeftChild) {
+                    parent.left = current.left
+                } else {
+                    parent.right = current.left
+                }
+            } else if (current.left == null) {
+                if (current == this.root) {
+                    this.root = current.right
+                } else if (isLeftChild) {
+                    parent.left = current.right
+                } else {
+                    parent.right = current.right
+                }
+            }
+
+            // 2.3.删除的节点有两个子节点---右边找小一点点  左边找大一点点
+            else {
+                //获取后续节点
+                let successor = this.getSuccessor(current) // 11
+
+                //判断是否为根节点
+                if (current === this.root) {
+                    this.root = successor
+                } else if (isLeftChild) {
+                    parent.left = successor
+                } else {
+                    parent.right = successor
+                }
+
+                // 将删除节点的左子树 = 原来节点.left节
+                successor.left = current.left
+            }
         }
-        return key
+
+
+        //找我们后继的代码
+        BinarySearchTree.prototype.getSuccessor = function (delNode) {
+            //1.定义变量保存我们的后继
+            let successor = delNode
+            let current = delNode.right
+
+            //2.循环查找
+            while (current !== null) {
+                successor = current
+                current = current.left
+            }
+
+            return successor
+        }
     }
 
     //establish
@@ -189,6 +280,8 @@
     alert(bst.search(25))
     alert(bst.search(24))
     alert(bst.search(2))
+
+
 </script>
 </body>
 </html>
