@@ -200,7 +200,7 @@
                 //获取后续节点
                 let successor = this.getSuccessor(current) // 11
 
-                //判断是否为根节点
+                //check whether the node is the root node
                 if (current === this.root) {
                     this.root = successor
                 } else if (isLeftChild) {
@@ -215,16 +215,24 @@
         }
 
 
-        //找我们后继的代码
+        //find our successor code
         BinarySearchTree.prototype.getSuccessor = function (delNode) {
-            //1.定义变量保存我们的后继
+            //1.define variables to hold our successors
             let successor = delNode
             let current = delNode.right
+            let successorParent = successor
 
-            //2.循环查找
+            //2.loop search
             while (current !== null) {
+                successorParent = successor
                 successor = current
                 current = current.left
+            }
+
+            // 3.判断寻找到的节点是否是delNode的right节点
+            if (successor !== delNode.right) {
+                successorParent.left = successor.right
+                successor.right = delNode.right
             }
 
             return successor
